@@ -1,17 +1,30 @@
-# Force HTTPS
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# ============================================
+# SECURITY CONFIGURATION
+# ============================================
+# IMPORTANT: Before enabling HTTPS redirect, ensure you have a valid SSL certificate installed.
+# Contact your hosting provider to set up SSL/HTTPS for your domain.
 
-# Security Headers
+# ============================================
+# HTTPS REDIRECT (Uncomment after SSL is configured)
+# ============================================
+# Uncomment the following 4 lines AFTER your SSL certificate is properly installed:
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ============================================
+# SECURITY HEADERS
+# ============================================
 <IfModule mod_headers.c>
-    # Force HTTPS (HSTS)
-    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # HSTS (HTTP Strict Transport Security)
+    # Uncomment the line below AFTER SSL certificate is properly configured:
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
     
-    # Prevent clickjacking
+    # Prevent clickjacking attacks
     Header always set X-Frame-Options "SAMEORIGIN"
     
-    # XSS Protection
+    # Enable XSS protection
     Header always set X-XSS-Protection "1; mode=block"
     
     # Prevent MIME type sniffing
@@ -20,7 +33,18 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     
-    # Content Security Policy (adjust as needed)
+    # Content Security Policy
     Header always set Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com;"
 </IfModule>
 
+# ============================================
+# ADDITIONAL SECURITY
+# ============================================
+# Disable directory browsing
+Options -Indexes
+
+# Protect .htaccess file
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
