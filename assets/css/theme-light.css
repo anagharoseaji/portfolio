@@ -51,9 +51,9 @@ body.tt-lightmode-on {
  * Style switch button
 /* ------------------------------------------------------------- */
 
+/* Hide style switch button - light theme only */
 .tt-style-switch {
-	position: relative;
-	margin-left: 40px;
+	display: none !important;
 }
 @media (max-width: 1024px) {
 	.tt-style-switch {

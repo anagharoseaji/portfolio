@@ -342,47 +342,15 @@
 	// =============
 	// Note. Add the "tt-lightmode-default" class to the <body> tag of your HTML page to enable light mode by default (you must clear your browser's cookies and cache first!).
 
-	// Style switch button
-	$(".tt-style-switch").on("click", function() {
-		$(this).toggleClass("active");
-	});
-
-	// Check for saved 'tt-lightmode-on' in localStorage
-	let lightMode = localStorage.getItem('tt-lightmode-on'); 
-
-	// Define enable and disable functions for light mode
+	// Force light mode always enabled - theme toggle disabled
+	// Always enable light mode regardless of localStorage or user preference
 	function enableLightMode() {
 		$('body').addClass('tt-lightmode-on');
 		localStorage.setItem('tt-lightmode-on', 'enabled');
 	}
 
-	function disableLightMode() {
-		$('body').removeClass('tt-lightmode-on');
-		localStorage.setItem('tt-lightmode-on', 'disabled');  // Save disabled state
-	}
-
-	// Check if light mode should be enabled by default
-	if ($('body').hasClass('tt-lightmode-default') && lightMode !== 'enabled') {
-		enableLightMode();
-	}
-
-	// Apply saved light mode state if it was enabled previously
-	if (lightMode === 'enabled') {
-		enableLightMode();
-	} else if (lightMode === 'disabled') {
-		disableLightMode();
-	}
-
-	// Toggle light mode on button click
-	$('.tt-style-switch').on('click', function() {
-		lightMode = localStorage.getItem('tt-lightmode-on'); 
-
-		if (lightMode !== 'enabled') {
-			enableLightMode();
-		} else {  
-			disableLightMode(); 
-		}
-	});
+	// Force light mode on page load
+	enableLightMode();
 
 
 
